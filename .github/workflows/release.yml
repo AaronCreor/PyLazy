@@ -46,6 +46,9 @@ jobs:
         run: |
           git fetch origin "refs/tags/${{ steps.resolve-tag.outputs.tag }}:refs/tags/${{ steps.resolve-tag.outputs.tag }}" --force
 
+      - name: Check out tagged source for validation
+        run: git checkout "${{ steps.resolve-tag.outputs.tag }}"
+
       - name: Verify tag points to a commit on main
         shell: bash
         run: |
@@ -58,6 +61,24 @@ jobs:
 
           if ! git merge-base --is-ancestor "${target_sha}" "origin/main"; then
             echo "Release tag must point to a commit reachable from origin/main."
+            exit 1
+          fi
+
+      - name: Verify tag matches package version
+        shell: bash
+        run: |
+          package_version="$(python - <<'PY'
+          import tomllib
+          with open("pyproject.toml", "rb") as fh:
+              data = tomllib.load(fh)
+          print(data["project"]["version"])
+          PY
+          )"
+          expected_tag="v${package_version}"
+          actual_tag="${{ steps.resolve-tag.outputs.tag }}"
+
+          if [[ "${expected_tag}" != "${actual_tag}" ]]; then
+            echo "Tag/version mismatch: pyproject.toml declares ${package_version}, but workflow was run for ${actual_tag}."
             exit 1
           fi
 
