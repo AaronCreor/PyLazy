@@ -41,6 +41,11 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Fetch release tag
+        shell: bash
+        run: |
+          git fetch origin "refs/tags/${{ steps.resolve-tag.outputs.tag }}:refs/tags/${{ steps.resolve-tag.outputs.tag }}" --force
+
       - name: Verify tag points to a commit on main
         shell: bash
         run: |
