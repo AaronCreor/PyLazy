@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "PyFuncAI"
-version = "0.1.5rc1"
+version = "0.1.5"
 description = "Prompt-defined Python functions with lazy or eager LLM-backed generation."
 readme = "README.md"
 license = { file = "LICENSE" }
