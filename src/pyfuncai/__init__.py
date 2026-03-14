@@ -1,5 +1,7 @@
 """Public package interface for PyFuncAI."""
 
+from importlib.metadata import PackageNotFoundError, version
+
 from pyfuncai.core import GeneratedFunction, connect, createFunction, create_function
 from pyfuncai.exceptions import (
     ConfigurationError,
@@ -25,4 +27,7 @@ __all__ = [
     "create_function",
 ]
 
-__version__ = "0.1.0"
+try:
+    __version__ = version("PyFuncAI")
+except PackageNotFoundError:
+    __version__ = "0+unknown"
