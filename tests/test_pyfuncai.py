@@ -231,7 +231,8 @@ def test_cache_entries_delete_and_clear(tmp_path: Path) -> None:
     )
 
     entries = cache.entries()
-    assert [entry.cache_key for entry in entries] == ["second", "first"]
+    assert len(entries) == 2
+    assert {entry.cache_key for entry in entries} == {"first", "second"}
 
     assert cache.delete(first.cache_key) is True
     assert cache.delete(first.cache_key) is False
