@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*"
+    tags-ignore:
+      - "v*rc*"
   workflow_dispatch:
     inputs:
       tag:
@@ -21,6 +23,7 @@ permissions:
 jobs:
   verify-main:
     name: Verify main branch release
+    if: ${{ github.event_name != 'workflow_dispatch' || !contains(inputs.tag, 'rc') }}
     runs-on: ubuntu-latest
     outputs:
       tag: ${{ steps.resolve-tag.outputs.tag }}
