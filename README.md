@@ -1,10 +1,9 @@
 # PyFuncAI
 
 [![CI](https://github.com/AaronCreor/PyFuncAI/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AaronCreor/PyFuncAI/actions/workflows/ci.yml)
-[![Release](https://github.com/AaronCreor/PyFuncAI/actions/workflows/release.yml/badge.svg)](https://github.com/AaronCreor/PyFuncAI/actions/workflows/release.yml)
-[![codecov](https://codecov.io/gh/AaronCreor/PyFuncAI/branch/main/graph/badge.svg)](https://codecov.io/gh/AaronCreor/PyFuncAI)
-[![PyPI](https://img.shields.io/pypi/v/PyFuncAI.svg)](https://pypi.org/project/PyFuncAI/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/PyFuncAI.svg)](https://pypi.org/project/PyFuncAI/)
+[![GitHub Release](https://img.shields.io/github/v/release/AaronCreor/PyFuncAI)](https://github.com/AaronCreor/PyFuncAI/releases)
+[![PyPI](https://img.shields.io/pypi/v/pyfuncai?cacheSeconds=300)](https://pypi.org/project/PyFuncAI/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyfuncai?cacheSeconds=300)](https://pypi.org/project/PyFuncAI/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -68,7 +67,7 @@ GitHub Actions workflows live in `.github/workflows/`:
 - `ci.yml`: formatting, tests, coverage, and package builds on `main`, `preview`, `dev`, and pull requests
 - `release.yml`: verifies the tag commit is on `main`, builds distributions, creates a GitHub release, and publishes to PyPI
 
-The coverage badge expects Codecov to be enabled for the repository. The CI workflow already uploads `coverage.xml`; once Codecov is connected, the badge will begin reporting real data.
+The CI workflow still uploads `coverage.xml`, but the README no longer exposes a Codecov badge.
 
 ## Quick Start
 
