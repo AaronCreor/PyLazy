@@ -3,14 +3,14 @@ requires = ["hatchling>=1.27.0"]
 build-backend = "hatchling.build"
 
 [project]
-name = "pylazy"
+name = "pyfuncai"
 version = "0.1.0"
 description = "Prompt-defined Python functions with lazy or eager LLM-backed generation."
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 authors = [
-  { name = "PyLazy Contributors" },
+  { name = "PyFuncAI Contributors" },
 ]
 keywords = [
   "ai",
@@ -35,10 +35,10 @@ classifiers = [
 dependencies = []
 
 [project.urls]
-Homepage = "https://github.com/AaronCreor/PyLazy"
-Repository = "https://github.com/AaronCreor/PyLazy"
-Issues = "https://github.com/AaronCreor/PyLazy/issues"
-Changelog = "https://github.com/AaronCreor/PyLazy/releases"
+Homepage = "https://github.com/AaronCreor/PyFuncAI"
+Repository = "https://github.com/AaronCreor/PyFuncAI"
+Issues = "https://github.com/AaronCreor/PyFuncAI/issues"
+Changelog = "https://github.com/AaronCreor/PyFuncAI/releases"
 
 [project.optional-dependencies]
 dev = [
@@ -50,7 +50,7 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pylazy"]
+packages = ["src/pyfuncai"]
 
 [tool.hatch.build.targets.sdist]
 include = [
@@ -70,7 +70,7 @@ target-version = ["py310"]
 testpaths = ["tests"]
 
 [tool.coverage.run]
-source = ["pylazy"]
+source = ["pyfuncai"]
 branch = true
 
 [tool.coverage.report]

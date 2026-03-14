@@ -6,7 +6,7 @@ import ast
 import json
 import re
 
-from pylazy.exceptions import GenerationError
+from pyfuncai.exceptions import GenerationError
 
 
 def build_generation_prompt(

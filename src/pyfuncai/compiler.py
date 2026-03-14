@@ -7,7 +7,7 @@ from collections.abc import Callable, Iterable
 from types import CodeType
 from typing import Any
 
-from pylazy.exceptions import ValidationError
+from pyfuncai.exceptions import ValidationError
 
 SAFE_BUILTIN_NAMES = {
     "abs",
@@ -76,10 +76,12 @@ def compile_function(
 ) -> Callable[..., Any]:
     """Compile validated source code and return the generated function object."""
 
-    code: CodeType = compile(source, filename=f"<pylazy:{function_name}>", mode="exec")
+    code: CodeType = compile(
+        source, filename=f"<pyfuncai:{function_name}>", mode="exec"
+    )
     namespace: dict[str, Any] = {
         "__builtins__": _build_safe_builtins(allowed_modules),
-        "__name__": "pylazy.generated",
+        "__name__": "pyfuncai.generated",
     }
     exec(code, namespace, namespace)
 

@@ -1,4 +1,4 @@
-"""Unit tests for the core PyLazy generation pipeline."""
+"""Unit tests for the core PyFuncAI generation pipeline."""
 
 from __future__ import annotations
 
@@ -6,16 +6,16 @@ from typing import Any
 
 import pytest
 
-from pylazy import (
+from pyfuncai import (
     ConfigurationError,
     ValidationError,
     connect,
     createFunction,
     create_function,
 )
-from pylazy.cache import DiskCache
-from pylazy.core import GeneratedFunction
-from pylazy.providers import BaseProvider
+from pyfuncai.cache import DiskCache
+from pyfuncai.core import GeneratedFunction
+from pyfuncai.providers import BaseProvider
 
 
 class FakeProvider(BaseProvider):

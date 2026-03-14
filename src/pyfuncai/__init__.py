@@ -1,14 +1,14 @@
-"""Public package interface for PyLazy."""
+"""Public package interface for PyFuncAI."""
 
-from pylazy.core import GeneratedFunction, connect, createFunction, create_function
-from pylazy.exceptions import (
+from pyfuncai.core import GeneratedFunction, connect, createFunction, create_function
+from pyfuncai.exceptions import (
     ConfigurationError,
     GenerationError,
     ProviderError,
-    PyLazyError,
+    PyFuncAIError,
     ValidationError,
 )
-from pylazy.providers import GeminiProvider, OllamaProvider, OpenAIProvider
+from pyfuncai.providers import GeminiProvider, OllamaProvider, OpenAIProvider
 
 __all__ = [
     "ConfigurationError",
@@ -18,7 +18,7 @@ __all__ = [
     "OllamaProvider",
     "OpenAIProvider",
     "ProviderError",
-    "PyLazyError",
+    "PyFuncAIError",
     "ValidationError",
     "connect",
     "createFunction",

@@ -129,7 +129,7 @@ jobs:
       contents: read
     environment:
       name: pypi
-      url: https://pypi.org/project/pylazy/
+      url: https://pypi.org/project/pyfuncai/
 
     steps:
       - name: Download release artifacts

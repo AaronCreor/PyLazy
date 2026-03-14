@@ -7,20 +7,20 @@ from pathlib import Path
 
 import pytest
 
-from pylazy import connect, create_function
+from pyfuncai import connect, create_function
 
 pytestmark = pytest.mark.skipif(
-    os.environ.get("PYLAZY_RUN_OLLAMA_TESTS") != "1",
-    reason="Set PYLAZY_RUN_OLLAMA_TESTS=1 to run live Ollama integration tests.",
+    os.environ.get("PYFUNCAI_RUN_OLLAMA_TESTS") != "1",
+    reason="Set PYFUNCAI_RUN_OLLAMA_TESTS=1 to run live Ollama integration tests.",
 )
 
 
 def test_ollama_live_generation(tmp_path: Path) -> None:
     """Generate a small function through Ollama and verify the result."""
 
-    model = os.environ.get("PYLAZY_OLLAMA_MODEL", "qwen3.5:latest")
-    base_url = os.environ.get("PYLAZY_OLLAMA_BASE_URL", "http://localhost:11434")
-    timeout = float(os.environ.get("PYLAZY_OLLAMA_TIMEOUT", "180"))
+    model = os.environ.get("PYFUNCAI_OLLAMA_MODEL", "qwen3.5:latest")
+    base_url = os.environ.get("PYFUNCAI_OLLAMA_BASE_URL", "http://localhost:11434")
+    timeout = float(os.environ.get("PYFUNCAI_OLLAMA_TIMEOUT", "180"))
 
     connect(
         "ollama",

@@ -1,4 +1,4 @@
-"""Top-level runtime and public API for PyLazy."""
+"""Top-level runtime and public API for PyFuncAI."""
 
 from __future__ import annotations
 
@@ -7,12 +7,12 @@ import inspect
 import re
 from typing import Any
 
-from pylazy.cache import DiskCache, make_cache_key
-from pylazy.compiler import compile_function
-from pylazy.exceptions import ConfigurationError, GenerationError
-from pylazy.prompts import build_generation_prompt, extract_python_source
-from pylazy.providers import BaseProvider, create_provider
-from pylazy.validation import DEFAULT_ALLOWED_MODULES, validate_function_source
+from pyfuncai.cache import DiskCache, make_cache_key
+from pyfuncai.compiler import compile_function
+from pyfuncai.exceptions import ConfigurationError, GenerationError
+from pyfuncai.prompts import build_generation_prompt, extract_python_source
+from pyfuncai.providers import BaseProvider, create_provider
+from pyfuncai.validation import DEFAULT_ALLOWED_MODULES, validate_function_source
 
 _DEFAULT_PROVIDER: BaseProvider | None = None
 _DEFAULT_CACHE: DiskCache | None = None
@@ -209,10 +209,10 @@ def create_function(
         `"lazy"` defers code generation until the first call, while `"eager"`
         generates immediately during `create_function()`.
     function_name:
-        Optional explicit function name. When omitted, PyLazy derives a stable
+        Optional explicit function name. When omitted, PyFuncAI derives a stable
         snake_case name from the prompt.
     provider:
-        Optional provider instance. If omitted, PyLazy uses the most recent
+        Optional provider instance. If omitted, PyFuncAI uses the most recent
         provider configured by `connect()`.
     cache_dir:
         Optional cache directory for this function. If omitted, the runtime cache

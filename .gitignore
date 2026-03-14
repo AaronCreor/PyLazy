@@ -138,9 +138,9 @@ celerybeat.pid
 .env
 .envrc
 .venv
-.pylazy/
-.pylazy_cache/
-.cache/pylazy/
+.pyfuncai/
+.pyfuncai_cache/
+.cache/pyfuncai/
 env/
 venv/
 ENV/

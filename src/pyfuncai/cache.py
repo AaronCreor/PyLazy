@@ -33,13 +33,13 @@ def default_cache_dir() -> Path:
 
     if os.name == "nt":
         root = Path(os.environ.get("LOCALAPPDATA", Path.home() / "AppData" / "Local"))
-        return root / "PyLazy" / "cache"
+        return root / "PyFuncAI" / "cache"
 
     xdg_cache_home = os.environ.get("XDG_CACHE_HOME")
     if xdg_cache_home:
-        return Path(xdg_cache_home) / "pylazy"
+        return Path(xdg_cache_home) / "pyfuncai"
 
-    return Path.home() / ".cache" / "pylazy"
+    return Path.home() / ".cache" / "pyfuncai"
 
 
 def make_cache_key(payload: dict[str, Any]) -> str:

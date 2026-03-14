@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import ast
 
-from pylazy.exceptions import ValidationError
+from pyfuncai.exceptions import ValidationError
 
 DEFAULT_ALLOWED_MODULES = (
     "collections",

@@ -1,14 +1,14 @@
-# PyLazy
+# PyFuncAI
 
-[![CI](https://github.com/AaronCreor/PyLazy/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AaronCreor/PyLazy/actions/workflows/ci.yml)
-[![Release](https://github.com/AaronCreor/PyLazy/actions/workflows/release.yml/badge.svg)](https://github.com/AaronCreor/PyLazy/actions/workflows/release.yml)
-[![codecov](https://codecov.io/gh/AaronCreor/PyLazy/branch/main/graph/badge.svg)](https://codecov.io/gh/AaronCreor/PyLazy)
-[![PyPI](https://img.shields.io/pypi/v/pylazy.svg)](https://pypi.org/project/pylazy/)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pylazy.svg)](https://pypi.org/project/pylazy/)
+[![CI](https://github.com/AaronCreor/PyFuncAI/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/AaronCreor/PyFuncAI/actions/workflows/ci.yml)
+[![Release](https://github.com/AaronCreor/PyFuncAI/actions/workflows/release.yml/badge.svg)](https://github.com/AaronCreor/PyFuncAI/actions/workflows/release.yml)
+[![codecov](https://codecov.io/gh/AaronCreor/PyFuncAI/branch/main/graph/badge.svg)](https://codecov.io/gh/AaronCreor/PyFuncAI)
+[![PyPI](https://img.shields.io/pypi/v/pyfuncai.svg)](https://pypi.org/project/pyfuncai/)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pyfuncai.svg)](https://pypi.org/project/pyfuncai/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](LICENSE)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-PyLazy is a Python library for defining functions with prompts and letting an LLM generate the implementation on demand.
+PyFuncAI is a Python library for defining functions with prompts and letting an LLM generate the implementation on demand.
 
 It is built as a normal PyPI-style package, exposes a small public API, supports local Ollama models and remote OpenAI/Gemini providers, and can cache generated source on disk for reuse across runs.
 
@@ -24,7 +24,7 @@ The GitHub Actions workflows are wired to run CI on all three branches, while Py
 
 ## What It Does
 
-PyLazy turns a prompt plus a Python signature into a callable object:
+PyFuncAI turns a prompt plus a Python signature into a callable object:
 
 - `mode="lazy"` delays generation until first use.
 - `mode="eager"` builds immediately.
@@ -46,7 +46,7 @@ This is still experimental. Validation is intentionally conservative, but LLM-ge
 Once published:
 
 ```bash
-pip install pylazy
+pip install pyfuncai
 ```
 
 For local development from this repo:
@@ -80,7 +80,7 @@ This was smoke-tested locally on March 13, 2026 with:
 - model `qwen3.5:latest`
 
 ```python
-from pylazy import connect, create_function
+from pyfuncai import connect, create_function
 
 connect(
     "ollama",
@@ -104,7 +104,7 @@ print(greet.source)
 ### OpenAI
 
 ```python
-from pylazy import connect, create_function
+from pyfuncai import connect, create_function
 
 connect(
     "openai",
@@ -124,7 +124,7 @@ slugify = create_function(
 ### Gemini
 
 ```python
-from pylazy import connect, create_function
+from pyfuncai import connect, create_function
 
 connect(
     "gemini",
@@ -201,7 +201,7 @@ Cached source is keyed by:
 - mode
 - allowed module list
 
-By default PyLazy uses an OS-appropriate user cache directory. You can override that globally in `connect(..., cache_dir=...)` or per function with `create_function(..., cache_dir=...)`.
+By default PyFuncAI uses an OS-appropriate user cache directory. You can override that globally in `connect(..., cache_dir=...)` or per function with `create_function(..., cache_dir=...)`.
 
 ## Live Testing
 
@@ -214,21 +214,21 @@ pytest
 An optional live Ollama integration test is included but skipped by default:
 
 ```bash
-PYLAZY_RUN_OLLAMA_TESTS=1 pytest tests/test_ollama_live.py
+PYFUNCAI_RUN_OLLAMA_TESTS=1 pytest tests/test_ollama_live.py
 ```
 
 PowerShell:
 
 ```powershell
-$env:PYLAZY_RUN_OLLAMA_TESTS = "1"
+$env:PYFUNCAI_RUN_OLLAMA_TESTS = "1"
 pytest tests/test_ollama_live.py
 ```
 
 Optional environment variables for the live test:
 
-- `PYLAZY_OLLAMA_MODEL`
-- `PYLAZY_OLLAMA_BASE_URL`
-- `PYLAZY_OLLAMA_TIMEOUT`
+- `PYFUNCAI_OLLAMA_MODEL`
+- `PYFUNCAI_OLLAMA_BASE_URL`
+- `PYFUNCAI_OLLAMA_TIMEOUT`
 
 ## Project Layout
 
@@ -236,7 +236,7 @@ Optional environment variables for the live test:
 .github/workflows/
   ci.yml
   release.yml
-src/pylazy/
+src/pyfuncai/
   __init__.py
   cache.py
   compiler.py
@@ -253,7 +253,7 @@ The package uses a `src/` layout and `pyproject.toml`, which keeps it ready for 
 
 ## Safety Notes
 
-PyLazy validates generated code, but it does not provide hard sandboxing. The current implementation focuses on:
+PyFuncAI validates generated code, but it does not provide hard sandboxing. The current implementation focuses on:
 
 - AST checks
 - restricted imports
@@ -275,7 +275,7 @@ Current state of the repository:
 
 ## Publishing To PyPI
 
-PyLazy is configured for PyPI trusted publishing with GitHub Actions. The release workflow file is:
+PyFuncAI is configured for PyPI trusted publishing with GitHub Actions. The release workflow file is:
 
 - `.github/workflows/release.yml`
 
@@ -297,9 +297,9 @@ Recommended:
 
 In PyPI, add a new trusted publisher using the GitHub tab with these values:
 
-- PyPI Project Name: `pylazy`
+- PyPI Project Name: `pyfuncai`
 - Owner: `AaronCreor`
-- Repository name: `PyLazy`
+- Repository name: `PyFuncAI`
 - Workflow name: `release.yml`
 - Environment name: `pypi`
 
