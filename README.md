@@ -162,6 +162,33 @@ Generated source can be cached on disk and reused across runs. Cache keys includ
 
 The default cache location is OS-specific. You can override it globally with `connect(..., cache_dir=...)` or per function with `create_function(..., cache_dir=...)`.
 
+## CLI
+
+PyFuncAI ships with a small command-line interface for prebuilding functions and
+inspecting cached source.
+
+Prebuild every prompt-defined function created by a script:
+
+```bash
+pyfuncai build path/to/script.py
+```
+
+Force regeneration even when cached source already exists:
+
+```bash
+pyfuncai build --force path/to/script.py
+```
+
+Inspect the cache directory:
+
+```bash
+pyfuncai cache path
+pyfuncai cache list
+pyfuncai cache clear
+```
+
+You can point cache commands at a different directory with `--cache-dir`.
+
 ## Safety
 
 PyFuncAI validates generated code before execution. The current implementation includes:

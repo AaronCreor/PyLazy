@@ -16,6 +16,7 @@ from pyfuncai.validation import DEFAULT_ALLOWED_MODULES, validate_function_sourc
 
 _DEFAULT_PROVIDER: BaseProvider | None = None
 _DEFAULT_CACHE: DiskCache | None = None
+_REGISTERED_FUNCTIONS: list["GeneratedFunction"] = []
 
 
 def connect(
@@ -258,6 +259,7 @@ def create_function(
     )
     if mode == "eager":
         generated.build()
+    _register_generated_function(generated)
     return generated
 
 
@@ -275,6 +277,24 @@ def _resolve_cache_store() -> DiskCache:
     if _DEFAULT_CACHE is None:
         _DEFAULT_CACHE = DiskCache()
     return _DEFAULT_CACHE
+
+
+def _register_generated_function(function: GeneratedFunction) -> None:
+    """Track created functions so CLI tooling can materialize them later."""
+
+    _REGISTERED_FUNCTIONS.append(function)
+
+
+def _registered_functions() -> tuple[GeneratedFunction, ...]:
+    """Return the currently tracked generated functions in creation order."""
+
+    return tuple(_REGISTERED_FUNCTIONS)
+
+
+def _clear_registered_functions() -> None:
+    """Reset the in-process generated-function registry."""
+
+    _REGISTERED_FUNCTIONS.clear()
 
 
 def _derive_function_name(prompt: str) -> str:

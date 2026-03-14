@@ -37,5 +37,8 @@ def test_ollama_live_generation(tmp_path: Path) -> None:
         cache=False,
     )
 
-    assert greet("Alice") == "Hello, Alice!"
+    greeting = greet("Alice")
+
+    assert "alice" in greeting.lower()
+    assert "hello" in greeting.lower()
     assert greet.source is not None

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -14,6 +15,7 @@ from pyfuncai import (
     create_function,
 )
 from pyfuncai.cache import DiskCache
+from pyfuncai.cli import main as cli_main
 from pyfuncai.core import GeneratedFunction
 from pyfuncai.providers import BaseProvider
 
@@ -201,3 +203,131 @@ def test_cache_store_round_trip(tmp_path: Any) -> None:
     loaded = cache.get(entry.cache_key)
     assert loaded is not None
     assert loaded.source == entry.source
+
+
+def test_cache_entries_delete_and_clear(tmp_path: Path) -> None:
+    """Cache helpers should list, delete, and clear entries on disk."""
+
+    cache = DiskCache(tmp_path)
+    first = cache.set(
+        cache_key="first",
+        function_name="first_fn",
+        signature="() -> str",
+        source="def first_fn() -> str:\n    return 'first'\n",
+        provider={"provider": "fake", "model": "fake-model"},
+        prompt="Return first.",
+        mode="lazy",
+        allow_modules=["math"],
+    )
+    cache.set(
+        cache_key="second",
+        function_name="second_fn",
+        signature="() -> str",
+        source="def second_fn() -> str:\n    return 'second'\n",
+        provider={"provider": "fake", "model": "fake-model"},
+        prompt="Return second.",
+        mode="eager",
+        allow_modules=["math"],
+    )
+
+    entries = cache.entries()
+    assert [entry.cache_key for entry in entries] == ["second", "first"]
+
+    assert cache.delete(first.cache_key) is True
+    assert cache.delete(first.cache_key) is False
+    assert cache.clear() == 1
+    assert cache.entries() == []
+
+
+def test_cli_build_materializes_generated_functions(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    """The build command should execute a script and prebuild created functions."""
+
+    cache_dir = tmp_path / "cache"
+    script_path = tmp_path / "build_target.py"
+    script_path.write_text(
+        "\n".join(
+            [
+                "from typing import Any",
+                "",
+                "from pyfuncai import create_function",
+                "from pyfuncai.providers import BaseProvider",
+                "",
+                "",
+                "class ScriptProvider(BaseProvider):",
+                '    """Return a deterministic function for CLI tests."""',
+                "",
+                '    provider_name = "script-fake"',
+                "",
+                "    def __init__(self) -> None:",
+                '        super().__init__(model="script-model", timeout=1.0)',
+                "",
+                "    def generate_text(",
+                "        self,",
+                "        *,",
+                "        prompt: str,",
+                "        system_prompt: str | None = None,",
+                "        temperature: float | None = None,",
+                "        max_output_tokens: int | None = None,",
+                "    ) -> str:",
+                '        return "def greet(name: str) -> str:\\n    return f\\"Hello, {name}!\\""',
+                "",
+                "    def cache_identity(self) -> dict[str, Any]:",
+                '        return {"provider": self.provider_name, "model": self.model}',
+                "",
+                "",
+                "create_function(",
+                '    "Return a short greeting for the provided name.",',
+                '    signature="(name: str) -> str",',
+                '    function_name="greet",',
+                "    provider=ScriptProvider(),",
+                f"    cache_dir={str(cache_dir)!r},",
+                ")",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    exit_code = cli_main(["build", str(script_path)])
+
+    captured = capsys.readouterr()
+    assert exit_code == 0
+    assert "Built greet" in captured.out
+    assert len(list(cache_dir.glob("*.json"))) == 1
+
+
+def test_cli_cache_commands(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
+    """The cache subcommands should report, list, remove, and clear entries."""
+
+    cache = DiskCache(tmp_path)
+    entry = cache.set(
+        cache_key="cache-entry",
+        function_name="cached_fn",
+        signature="() -> str",
+        source="def cached_fn() -> str:\n    return 'ok'\n",
+        provider={"provider": "fake", "model": "fake-model"},
+        prompt="Return ok.",
+        mode="lazy",
+        allow_modules=["math"],
+    )
+
+    assert cli_main(["cache", "--cache-dir", str(tmp_path), "path"]) == 0
+    path_output = capsys.readouterr()
+    assert str(tmp_path) in path_output.out
+
+    assert cli_main(["cache", "--cache-dir", str(tmp_path), "list"]) == 0
+    list_output = capsys.readouterr()
+    assert entry.cache_key in list_output.out
+    assert entry.function_name in list_output.out
+
+    assert (
+        cli_main(["cache", "--cache-dir", str(tmp_path), "remove", entry.cache_key])
+        == 0
+    )
+    remove_output = capsys.readouterr()
+    assert "Removed cache entry" in remove_output.out
+
+    assert cli_main(["cache", "--cache-dir", str(tmp_path), "clear"]) == 0
+    clear_output = capsys.readouterr()
+    assert "Removed 0 cache entries." in clear_output.out

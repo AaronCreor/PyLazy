@@ -139,7 +139,7 @@ celerybeat.pid
 .envrc
 .venv
 .pyfuncai/
-.pyfuncai_cache/
+.pyfuncai_cache*/
 .cache/pyfuncai/
 env/
 venv/
@@ -208,3 +208,6 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Local agent instructions
+AI_AGENT_DEPLOYMENT.md

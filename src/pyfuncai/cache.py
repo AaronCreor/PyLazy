@@ -79,6 +79,44 @@ class DiskCache:
         payload.pop("schema_version", None)
         return CacheEntry(**payload)
 
+    def entries(self) -> list[CacheEntry]:
+        """Return all cache entries currently stored on disk."""
+
+        entries: list[CacheEntry] = []
+        for path in sorted(self.cache_dir.glob("*.json")):
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+            except json.JSONDecodeError:
+                continue
+
+            if payload.get("schema_version") != CACHE_SCHEMA_VERSION:
+                continue
+
+            payload.pop("schema_version", None)
+            entries.append(CacheEntry(**payload))
+
+        entries.sort(key=lambda entry: entry.created_at, reverse=True)
+        return entries
+
+    def delete(self, cache_key: str) -> bool:
+        """Delete a cache entry by key and report whether a file was removed."""
+
+        path = self.path_for(cache_key)
+        if not path.exists():
+            return False
+
+        path.unlink()
+        return True
+
+    def clear(self) -> int:
+        """Delete every cache entry and return the number of removed files."""
+
+        removed = 0
+        for path in self.cache_dir.glob("*.json"):
+            path.unlink()
+            removed += 1
+        return removed
+
     def set(
         self,
         *,
